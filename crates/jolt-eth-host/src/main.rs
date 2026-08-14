@@ -11,6 +11,12 @@
 //! opens with an invalid public key. Benchmarking those and calling the result
 //! "the bn254 workload" would be wrong, so the corpus names the case it means.
 //!
+//! Within a case we take the **last** block, matching
+//! `zkevm-benchmark-workload`'s `load_eest_benchmark_fixtures`: "the worst case
+//! block is the last block and the others are setup blocks". Every case in this
+//! corpus happens to have exactly one block, so this changes no number here, but
+//! taking the first would measure setup on a fixture that had any.
+//!
 //! The fixture is an EEST `blockchain_tests` JSON; we take the first block that
 //! carries `statelessInputBytes` / `statelessOutputBytes`, which is the same
 //! contract `zkevm-benchmark-workload` feeds to the other three backends.
@@ -277,7 +283,8 @@ impl Fixture {
             let Some(blocks) = entry.get("blocks").and_then(|b| b.as_array()) else {
                 continue;
             };
-            for (index, block) in blocks.iter().enumerate() {
+            // Last block, not first: earlier blocks are setup.
+            for (index, block) in blocks.iter().enumerate().rev() {
                 let (Some(input), Some(output)) = (
                     block.get("statelessInputBytes").and_then(|v| v.as_str()),
                     block.get("statelessOutputBytes").and_then(|v| v.as_str()),

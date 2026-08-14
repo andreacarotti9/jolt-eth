@@ -147,7 +147,9 @@ fn load_fixture(path: &str, case: Option<&str>) -> (String, String, Vec<u8>, Vec
         let Some(blocks) = entry.get("blocks").and_then(|b| b.as_array()) else {
             continue;
         };
-        for (index, block) in blocks.iter().enumerate() {
+        // Last block, not first: earlier blocks are setup, matching
+        // zkevm-benchmark-workload's loader.
+        for (index, block) in blocks.iter().enumerate().rev() {
             let (Some(input), Some(output)) = (
                 block.get("statelessInputBytes").and_then(|v| v.as_str()),
                 block.get("statelessOutputBytes").and_then(|v| v.as_str()),

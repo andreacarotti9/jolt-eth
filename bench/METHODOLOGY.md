@@ -47,6 +47,12 @@ workload: value transfer, keccak-heavy, ecrecover, bn254 pairing, modexp,
 secp256r1, contract deploy. `scripts/corpus.sh` is the single definition both
 drivers read, so the columns line up by construction.
 
+Within a case, the **last** block is used, matching
+`zkevm-benchmark-workload`'s `load_eest_benchmark_fixtures`: earlier blocks are
+setup and the last is the workload. Every case in this corpus has exactly one
+block, so the rule changes nothing here, but taking the first would measure setup
+on any fixture that had more.
+
 **Each workload names its case, and that is not a detail.** An EEST file holds
 many cases and the first is frequently degenerate: `ecpairing/valid.json` opens
 with the *empty* input, which performs no pairing at all, and
