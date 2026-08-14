@@ -1,0 +1,19 @@
+[package]
+name = "ere-platform-jolt"
+version.workspace = true
+edition.workspace = true
+license = "MIT OR Apache-2.0"
+description = "Ere Platform implementation for the Jolt zkVM"
+
+[dependencies]
+ere-platform-core.workspace = true
+jolt-platform = { path = "../../upstream/jolt/jolt-platform", default-features = false }
+critical-section = { version = "1.2", optional = true }
+
+[features]
+# A zkVM guest is single-threaded with no interrupts, so `critical-section` has a
+# trivial correct implementation - and without one, any guest that reaches
+# `once_cell::sync::OnceCell` (reth's `SealedHeader::hash_ref` does) fails to
+# link. On by default; turn it off if the guest supplies its own.
+default = ["critical-section-impl"]
+critical-section-impl = ["dep:critical-section"]
