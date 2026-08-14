@@ -1,0 +1,45 @@
+[package]
+name = "jolt-zkvm-accel"
+version.workspace = true
+edition.workspace = true
+license = "MIT OR Apache-2.0"
+description = "eth-act zkvm-standards accelerator C ABI implemented on Jolt inlines"
+
+# The guest-side accelerator layer for Jolt, the counterpart of SP1's `libzkevm`.
+# Accelerated on Jolt inlines: keccak256, sha256, secp256k1 (verify + ecrecover),
+# secp256r1 verify. Everything else delegates to revm's own software backend,
+# which is exactly what the guest would have used anyway - so enabling the
+# `zkvm-interface` seam never costs cycles, it only ever saves them.
+[dependencies]
+jolt-inlines-sdk = { path = "../../upstream/jolt/jolt-inlines/sdk", default-features = false, features = ["elliptic-curve"] }
+jolt-inlines-keccak256.workspace = true
+jolt-inlines-sha2.workspace = true
+jolt-inlines-secp256k1.workspace = true
+jolt-inlines-p256.workspace = true
+revm = { version = "42.0.1", default-features = false }
+
+[dev-dependencies]
+# Differential testing against the implementations we are replacing.
+jolt-inlines-keccak256 = { path = "../../upstream/jolt/jolt-inlines/keccak256", features = ["host"] }
+jolt-inlines-sha2 = { path = "../../upstream/jolt/jolt-inlines/sha2", features = ["host"] }
+jolt-inlines-secp256k1 = { path = "../../upstream/jolt/jolt-inlines/secp256k1", features = ["host"] }
+jolt-inlines-p256 = { path = "../../upstream/jolt/jolt-inlines/p256", features = ["host"] }
+k256 = { version = "0.14", features = ["ecdsa", "arithmetic"] }
+p256 = { version = "0.14", features = ["ecdsa", "arithmetic"] }
+sha3 = "0.10"
+sha2 = "0.10"
+hex = "0.4"
+rand = "0.9"
+
+[features]
+default = []
+# Runs the inline reference implementations instead of emitting Jolt custom
+# instructions, so host-side crates can execute the very same code natively.
+# Never enable this for a guest build: it would silently drop the inlines.
+host = [
+    "jolt-inlines-keccak256/host",
+    "jolt-inlines-sha2/host",
+    "jolt-inlines-secp256k1/host",
+    "jolt-inlines-p256/host",
+    "jolt-inlines-sdk/host",
+]
