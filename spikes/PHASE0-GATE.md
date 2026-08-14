@@ -105,14 +105,14 @@ Block-level effect: the ecrecover fixture goes from 10.59M cycles to 3.99M -
 
 ### S5 — SP1 baseline
 
-See `REPORT.md`; the SP1 column is produced by `sp1-baseline/` through Ere's own
+See `../report/REPORT.md`; the SP1 column is produced by `sp1-baseline/` through Ere's own
 SP1 backend on the same fixtures.
 
 ### S6 — trace length and RAM: a real constraint, but a smaller one than feared
 
 Measured with `jolt-prover-legacy` - the prover `#[jolt::provable]` wires up at
 this pin - on the 36 GiB dev box. The full ladder with peak memory is regenerated
-into `REPORT.md` by `scripts/s6-ladder.sh` and `scripts/summarize.py`; the shape
+into `../report/REPORT.md` by `scripts/s6-ladder.sh` and `scripts/summarize.py`; the shape
 is:
 
 - proving time linear in the bound - 5.6 s at 2^20 to 155.6 s at 2^26;

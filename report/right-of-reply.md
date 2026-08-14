@@ -85,9 +85,8 @@ Happy to file either properly if useful.
 Your harness is the neutrality argument in this work, and both the guest and the
 fixtures are yours unmodified.
 
-**What I would like reviewed** is the backend contract, in
-`report/ere-intent-issue.md` - specifically the three places Jolt does not fit
-the existing mould (no ambient guest IO, a compiler that shells out to the `jolt`
+**What I would like reviewed** is the backend contract - specifically the three
+places Jolt does not fit the existing mould (no ambient guest IO, a compiler that shells out to the `jolt`
 CLI, and a verifying key that carries verifier preprocessing rather than a
 digest). I would rather agree the shape before a PR than after.
 

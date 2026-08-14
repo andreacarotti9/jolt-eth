@@ -335,7 +335,7 @@ easiest way to publish a confidently wrong bug report.
 | backend Docker image | `../docker/jolt/`, mirroring `ere/docker/sp1/` |
 | Jolt stateless-validator guest | `../guests/stateless-validator-jolt` |
 | zkvm-standards accelerator C ABI on Jolt inlines | `../crates/jolt-zkvm-accel`, including an `ecrecover` Jolt does not ship |
-| Phase 0 spikes | `../spikes/`, gate memo in `PHASE0-GATE.md` |
+| Phase 0 spikes | `../spikes/`, gate memo in `../spikes/PHASE0-GATE.md` |
 
 ### Deviations from the plan
 
