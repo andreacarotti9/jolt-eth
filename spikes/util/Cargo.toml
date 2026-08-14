@@ -1,0 +1,10 @@
+[package]
+name = "spike-util"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde = { workspace = true, features = ["derive", "std"] }
+serde_json.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

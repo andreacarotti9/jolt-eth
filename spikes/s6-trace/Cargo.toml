@@ -1,0 +1,10 @@
+[package]
+name = "s6-trace"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+jolt-sdk = { workspace = true, features = ["host"] }
+guest = { package = "s6-trace-guest", path = "./guest" }
+spike-util.workspace = true
+serde = { workspace = true, features = ["derive", "std"] }

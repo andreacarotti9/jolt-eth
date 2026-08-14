@@ -1,0 +1,23 @@
+[package]
+name = "s6-trace-guest"
+version.workspace = true
+edition.workspace = true
+
+[features]
+guest = []
+
+[dependencies]
+jolt = { package = "jolt-sdk", path = "../../../upstream/jolt/jolt-sdk" }
+
+[lib]
+test = false
+doctest = false
+bench = false
+
+[[bin]]
+name = "s6-trace-guest"
+path = "src/main.rs"
+# Only ever linkable for the RISC-V guest target.
+required-features = ["guest"]
+test = false
+bench = false

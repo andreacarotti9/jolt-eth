@@ -1,0 +1,10 @@
+[package]
+name = "s2-advice"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+jolt-sdk = { workspace = true, features = ["host"] }
+guest = { package = "s2-advice-guest", path = "./guest" }
+spike-util.workspace = true
+serde = { workspace = true, features = ["derive", "std"] }

@@ -1,0 +1,10 @@
+[package]
+name = "s1-keccak"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+jolt-sdk = { workspace = true, features = ["host"] }
+guest = { package = "s1-keccak-guest", path = "./guest" }
+spike-util.workspace = true
+serde = { workspace = true, features = ["derive", "std"] }
