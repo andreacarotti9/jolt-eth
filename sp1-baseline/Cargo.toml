@@ -1,0 +1,26 @@
+# Deliberately its own workspace: the root workspace `[replace]`s arkworks 0.5
+# with Jolt's fork, and SP1's dependency tree must not be built against it. The
+# whole point of this crate is that the SP1 column is measured with SP1's own
+# resolution, not one bent to fit Jolt's.
+[workspace]
+
+[package]
+name = "sp1-baseline"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ere-compiler-sp1 = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+ere-prover-sp1 = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+ere-prover-core = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+# Same SP1 version Ere pins. Needed directly because Ere's pooled minimal
+# executor calls `reset()`, which SP1 v6.3.1 leaves as `todo!()` on every
+# non-x86_64 host - see the note in src/main.rs.
+sp1-sdk = { git = "https://github.com/succinctlabs/sp1", tag = "v6.3.1", features = ["blocking"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+hex = "0.4"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+debug = 1
