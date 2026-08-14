@@ -1,0 +1,43 @@
+[package]
+name = "stateless-validator-reth-jolt"
+version.workspace = true
+edition = "2024"
+
+# Track B: the EF stateless validator as a Jolt guest.
+#
+# `stateless-validator-reth`'s own manifest inherits from the ere-guests
+# workspace, so the reth / revm / alloy pins come from there unchanged - this
+# crate only chooses features and supplies the Jolt entrypoint.
+# `accel` is deliberately not a default feature: the host driver adds it to the
+# guest feature list per run, so one checkout produces both the accelerated and
+# the software-baseline ELF without editing this manifest.
+[features]
+# Set by the `jolt` CLI when compiling for RISC-V.
+guest = []
+# Routes every hash, signature and curve operation through the eth-act
+# zkvm-standards C ABI, which `jolt-zkvm-accel` answers on Jolt inlines.
+accel = [
+    "dep:jolt-zkvm-accel",
+    "stateless-validator-reth/zkvm-interface",
+    "alloy-primitives/native-keccak",
+]
+
+[dependencies]
+jolt = { package = "jolt-sdk", path = "../../upstream/jolt/jolt-sdk" }
+ere-platform-jolt = { path = "../../crates/ere-platform-jolt" }
+jolt-zkvm-accel = { path = "../../crates/jolt-zkvm-accel", optional = true }
+alloy-primitives = { version = "1.6.1", default-features = false, features = ["map-foldhash"] }
+stateless-validator-reth = { path = "../../upstream/ere-guests/crates/stateless-validator-reth", default-features = false }
+
+[lib]
+test = false
+doctest = false
+bench = false
+
+[[bin]]
+name = "stateless-validator-reth-jolt"
+path = "src/main.rs"
+# Only ever linkable for the RISC-V guest target.
+required-features = ["guest"]
+test = false
+bench = false
