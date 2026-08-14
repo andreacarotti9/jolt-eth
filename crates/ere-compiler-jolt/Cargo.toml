@@ -1,0 +1,11 @@
+[package]
+name = "ere-compiler-jolt"
+version.workspace = true
+edition.workspace = true
+license = "MIT OR Apache-2.0"
+description = "Ere Compiler implementation for the Jolt zkVM"
+
+[dependencies]
+ere-compiler-core.workspace = true
+thiserror.workspace = true
+toml = "0.8"

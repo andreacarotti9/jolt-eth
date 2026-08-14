@@ -1,0 +1,35 @@
+# Base image for the Jolt Ere backend, mirroring `ere/docker/sp1/Dockerfile.base`.
+#
+# Jolt differs from the other three backends in that its guest compiler is a
+# binary from the Jolt repository rather than a rustflags recipe, so the image
+# builds and installs the `jolt` CLI and pins the toolchain Jolt itself pins.
+ARG BASE_IMAGE=ere-base:latest
+
+FROM $BASE_IMAGE
+
+# Jolt has no CUDA path at this pin; the argument exists only so the image can be
+# built by the same driver as the others.
+ARG CUDA
+
+# Jolt's rust-toolchain.toml pins 1.95 with both bare-metal RISC-V targets.
+ARG JOLT_RUST_VERSION=1.95
+RUN rustup toolchain install ${JOLT_RUST_VERSION} \
+        --profile minimal \
+        --component cargo,rustc,clippy,rustfmt \
+        --target riscv32imac-unknown-none-elf,riscv64imac-unknown-none-elf && \
+    rustup default ${JOLT_RUST_VERSION}
+
+# Pin the commit every number in the report is tied to.
+ARG JOLT_COMMIT=915faf453f36871249615a7fdf2704d77a88f259
+ENV JOLT_DIR="/root/.jolt"
+
+RUN git clone --filter=blob:none https://github.com/a16z/jolt.git ${JOLT_DIR} && \
+    git -C ${JOLT_DIR} checkout ${JOLT_COMMIT} && \
+    cargo install --locked --path ${JOLT_DIR} --bin jolt --root /usr/local && \
+    # The checkout is only needed for the build; the CLI carries its own linker
+    # script, so drop ~2 GB of sources and target dir from the layer.
+    rm -rf ${JOLT_DIR}/target
+
+RUN jolt --help > /dev/null
+
+CMD ["/bin/bash"]

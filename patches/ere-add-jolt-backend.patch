@@ -1,0 +1,121 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index e8d2b60..8f72c35 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -3,22 +3,26 @@ members = [
+     # Compiler
+     "crates/compiler/cli",
+     "crates/compiler/core",
++    "crates/compiler/jolt",
+     "crates/compiler/openvm",
+     "crates/compiler/sp1",
+     "crates/compiler/zisk",
+     # Platform
+     "crates/platform/core",
++    "crates/platform/jolt",
+     "crates/platform/openvm",
+     "crates/platform/sp1",
+     "crates/platform/zisk",
+     # Prover
+     "crates/prover/core",
++    "crates/prover/jolt",
+     "crates/prover/openvm",
+     "crates/prover/sp1",
+     "crates/prover/zisk",
+     # Verifier
+     "crates/verifier/verifier",
+     "crates/verifier/core",
++    "crates/verifier/jolt",
+     "crates/verifier/openvm",
+     "crates/verifier/sp1",
+     "crates/verifier/zisk",
+@@ -119,6 +123,14 @@ twirp-build = "0.10"
+ uuid = "1"
+ zkvm-interface = { git = "https://github.com/eth-act/zkvm-standards", rev = "282cd356c3a0498416bb0619f9c8a347ce9933fb" }
+ 
++# Jolt dependencies
++#
++# Jolt publishes nothing to crates.io, so the backend pins a commit. The
++# refactor between `jolt-prover` and `jolt-prover-legacy` is live at this pin;
++# numbers move between commits, so the commit is part of the version string.
++jolt-sdk = { git = "https://github.com/a16z/jolt", rev = "915faf453f36871249615a7fdf2704d77a88f259", features = ["host"] }
++jolt-platform = { git = "https://github.com/a16z/jolt", rev = "915faf453f36871249615a7fdf2704d77a88f259", default-features = false }
++
+ # OpenVM dependencies
+ openvm = { git = "https://github.com/openvm-org/openvm.git", tag = "v2.1.0-preview", default-features = false }
+ openvm-algebra-guest = { git = "https://github.com/openvm-org/openvm.git", tag = "v2.1.0-preview" }
+@@ -167,19 +179,23 @@ ziskos = { git = "https://github.com/0xPolygonHermez/zisk.git", tag = "v1.0.0-al
+ # Local dependencies
+ ere-compiler = { path = "crates/compiler/cli" }
+ ere-compiler-core = { path = "crates/compiler/core" }
++ere-compiler-jolt = { path = "crates/compiler/jolt" }
+ ere-compiler-openvm = { path = "crates/compiler/openvm" }
+ ere-compiler-sp1 = { path = "crates/compiler/sp1" }
+ ere-compiler-zisk = { path = "crates/compiler/zisk" }
+ ere-platform-core = { path = "crates/platform/core" }
++ere-platform-jolt = { path = "crates/platform/jolt" }
+ ere-platform-openvm = { path = "crates/platform/openvm" }
+ ere-platform-sp1 = { path = "crates/platform/sp1" }
+ ere-platform-zisk = { path = "crates/platform/zisk" }
+ ere-prover-core = { path = "crates/prover/core" }
++ere-prover-jolt = { path = "crates/prover/jolt" }
+ ere-prover-openvm = { path = "crates/prover/openvm" }
+ ere-prover-sp1 = { path = "crates/prover/sp1" }
+ ere-prover-zisk = { path = "crates/prover/zisk" }
+ ere-verifier = { path = "crates/verifier/verifier" }
+ ere-verifier-core = { path = "crates/verifier/core" }
++ere-verifier-jolt = { path = "crates/verifier/jolt" }
+ ere-verifier-openvm = { path = "crates/verifier/openvm" }
+ ere-verifier-sp1 = { path = "crates/verifier/sp1" }
+ ere-verifier-zisk = { path = "crates/verifier/zisk" }
+diff --git a/crates/catalog/build.rs b/crates/catalog/build.rs
+index 2467c98..f6a37bf 100644
+--- a/crates/catalog/build.rs
++++ b/crates/catalog/build.rs
+@@ -29,7 +29,8 @@ fn generate_docker_image_tag() {
+ }
+ 
+ fn generate_zkvm_sdk_version_impl() {
+-    let [openvm_version, sp1_version, zisk_version] = [
++    let [jolt_version, openvm_version, sp1_version, zisk_version] = [
++        ("ere-verifier-jolt", "jolt-sdk"),
+         ("ere-platform-openvm", "openvm"),
+         ("ere-verifier-sp1", "sp1-verifier"),
+         ("ere-verifier-zisk", "zisk-verifier"),
+@@ -40,6 +41,7 @@ fn generate_zkvm_sdk_version_impl() {
+         r#"impl crate::zkVMKind {{
+     pub fn sdk_version(&self) -> &'static str {{
+         match self {{
++            Self::Jolt => "{jolt_version}",
+             Self::OpenVM => "{openvm_version}",
+             Self::SP1 => "{sp1_version}",
+             Self::Zisk => "{zisk_version}",
+diff --git a/crates/catalog/src/zkvm.rs b/crates/catalog/src/zkvm.rs
+index a7fd78e..e4dca74 100644
+--- a/crates/catalog/src/zkvm.rs
++++ b/crates/catalog/src/zkvm.rs
+@@ -32,6 +32,7 @@ use strum::{Display, EnumIter, EnumString, FromRepr, IntoEnumIterator, IntoStati
+     parse_err_ty = ParseError
+ )]
+ pub enum zkVMKind {
++    Jolt,
+     OpenVM,
+     SP1,
+     Zisk,
+@@ -107,6 +108,7 @@ mod tests {
+     fn parse_zkvm_kind() {
+         // Valid
+         for (ss, kind) in [
++            (["jolt", "Jolt"], zkVMKind::Jolt),
+             (["openvm", "OpenVM"], zkVMKind::OpenVM),
+             (["sp1", "SP1"], zkVMKind::SP1),
+             (["zisk", "Zisk"], zkVMKind::Zisk),
+@@ -120,7 +122,7 @@ mod tests {
+         assert_eq!(
+             ParseError::from("xxx").to_string(),
+             "Unsupported zkVM kind `xxx`, expect one of \
+-                        [openvm, sp1, zisk]"
++                        [jolt, openvm, sp1, zisk]"
+                 .to_string()
+         );
+     }

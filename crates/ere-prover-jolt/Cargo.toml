@@ -1,0 +1,29 @@
+[package]
+name = "ere-prover-jolt"
+version.workspace = true
+edition.workspace = true
+license = "MIT OR Apache-2.0"
+description = "Ere Prover implementation for the Jolt zkVM"
+
+[dependencies]
+ere-compiler-core.workspace = true
+ere-prover-core.workspace = true
+ere-verifier-jolt = { path = "../ere-verifier-jolt" }
+jolt-sdk = { workspace = true, features = ["host"] }
+
+# The whole inline family, host side. Decoding a guest ELF fails with
+# `UnsupportedInstruction` unless every inline it uses has its sequence builder
+# registered in this binary, and a backend cannot know which ones a guest chose.
+jolt-inlines-sha2 = { path = "../../upstream/jolt/jolt-inlines/sha2", features = ["host"] }
+jolt-inlines-keccak256 = { path = "../../upstream/jolt/jolt-inlines/keccak256", features = ["host"] }
+jolt-inlines-blake2 = { path = "../../upstream/jolt/jolt-inlines/blake2", features = ["host"] }
+jolt-inlines-blake3 = { path = "../../upstream/jolt/jolt-inlines/blake3", features = ["host"] }
+jolt-inlines-bigint = { path = "../../upstream/jolt/jolt-inlines/bigint", features = ["host"] }
+jolt-inlines-secp256k1 = { path = "../../upstream/jolt/jolt-inlines/secp256k1", features = ["host"] }
+jolt-inlines-p256 = { path = "../../upstream/jolt/jolt-inlines/p256", features = ["host"] }
+jolt-inlines-grumpkin = { path = "../../upstream/jolt/jolt-inlines/grumpkin", features = ["host"] }
+thiserror.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+ere-compiler-jolt = { path = "../ere-compiler-jolt" }
