@@ -1,0 +1,58 @@
+[workspace]
+members = [
+    "spikes/util",
+    "spikes/s1-keccak",
+    "spikes/s1-keccak/guest",
+    "spikes/s2-advice",
+    "spikes/s2-advice/guest",
+    "spikes/s6-trace",
+    "spikes/s6-trace/guest",
+    "crates/ere-platform-jolt",
+    "crates/ere-compiler-jolt",
+    "crates/ere-verifier-jolt",
+    "crates/ere-prover-jolt",
+    "crates/jolt-zkvm-accel",
+    "guests/stateless-validator-jolt",
+    "crates/jolt-eth-host",
+]
+exclude = ["upstream", "sp1-baseline"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+jolt-sdk = { path = "upstream/jolt/jolt-sdk" }
+jolt-inlines-keccak256 = { path = "upstream/jolt/jolt-inlines/keccak256", default-features = false }
+jolt-inlines-sha2 = { path = "upstream/jolt/jolt-inlines/sha2", default-features = false }
+jolt-inlines-secp256k1 = { path = "upstream/jolt/jolt-inlines/secp256k1", default-features = false }
+jolt-inlines-p256 = { path = "upstream/jolt/jolt-inlines/p256", default-features = false }
+spike-util = { path = "spikes/util" }
+ere-platform-core = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+ere-compiler-core = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+ere-prover-core = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+ere-verifier-core = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+ere-util-compile = { git = "https://github.com/eth-act/ere", tag = "v0.15.0" }
+thiserror = "2.0"
+bincode = { version = "2.0", features = ["alloc", "serde"] }
+serde = { version = "1", default-features = false }
+serde_json = "1"
+sha3 = { version = "0.10", default-features = false }
+sha2 = { version = "0.10", default-features = false }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Guests are built for riscv64imac by the `jolt` CLI; the host half of this
+# workspace is native. Keep the release profile close to jolt's examples.
+[profile.release]
+debug = 1
+
+# Jolt pins the arkworks fork via [replace] in its own workspace; an external
+# workspace that depends on jolt-sdk must repeat it or ark-ff resolves to
+# crates.io 0.5.0 and jolt-transcript fails to compile.
+[replace]
+"ark-bn254:0.5.0" = { git = "https://github.com/a16z/arkworks-algebra", branch = "dev/twist-shout" }
+"ark-ff:0.5.0" = { git = "https://github.com/a16z/arkworks-algebra", branch = "dev/twist-shout" }
+"ark-ec:0.5.0" = { git = "https://github.com/a16z/arkworks-algebra", branch = "dev/twist-shout" }
+"ark-serialize:0.5.0" = { git = "https://github.com/a16z/arkworks-algebra", branch = "dev/twist-shout" }
