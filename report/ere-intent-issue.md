@@ -100,4 +100,5 @@ a Jolt "cycle" to an SP1 "cycle" without that context will draw the wrong
 conclusion, and I would rather the backend land alongside that caveat than
 without it.
 
-Repository with all of the above, the measurements and the raw data: <link>.
+Repository with all of the above, the measurements and the raw data:
+https://github.com/andreacarotti9/jolt-eth
