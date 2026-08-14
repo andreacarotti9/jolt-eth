@@ -1,0 +1,17 @@
+[package]
+name = "jolt-eth-host"
+version.workspace = true
+edition.workspace = true
+
+# Host driver for the Jolt stateless-validator guest: run a fixture natively,
+# through the Jolt tracer, or all the way through prove + verify, and compare
+# the SSZ output against the fixture's expected bytes.
+[dependencies]
+jolt-sdk = { workspace = true, features = ["host"] }
+guest = { package = "stateless-validator-reth-jolt", path = "../../guests/stateless-validator-jolt" }
+# Native execution of the guest must run the inlines' reference implementations.
+jolt-zkvm-accel = { path = "../jolt-zkvm-accel", features = ["host"] }
+spike-util.workspace = true
+serde = { workspace = true, features = ["derive", "std"] }
+serde_json.workspace = true
+hex = "0.4"
