@@ -300,19 +300,29 @@ guest's output against the fixture on every run is what turned a
 performance-looking result into a bug report. The fix right-aligns the result and
 is locked by a regression test.
 
-**A benchmark bug that looked like a finding.** The corpus originally took the
-first case in each EEST file. The first case in `ecpairing/valid.json` is the
-*empty* input, which performs no pairing at all, and the first in
-`p256verify/wycheproof_valid.json` is an invalid public key, which never reaches
-a verification. So the campaign reported 2.00x for "the bn254 workload" and
-2.00x for "the secp256r1 workload" - clean, consistent, publishable numbers that
-were measuring hashing in both cases.
+**A benchmark bug that looked like a finding.** This driver originally took the
+first case in each EEST file and the first block within it. The first case in
+`ecpairing/valid.json` is the *empty* input, which performs no pairing at all,
+and the first in `p256verify/wycheproof_valid.json` is an invalid public key,
+which never reaches a verification. So the campaign reported 2.00x for "the bn254
+workload" and 2.00x for "the secp256r1 workload" - clean, consistent,
+publishable numbers that were measuring hashing in both cases.
 
 Naming the case each workload means (`scripts/corpus.sh`) changed those to 1.19x
 and 2.84x, and turned the bn254 gap from invisible into the sharpest result here.
-The lesson generalises past this repo: selecting fixtures by position rather than
-by meaning is the easiest way to publish a confidently wrong benchmark, and
-nothing in the numbers themselves will tell you.
+
+The coda is the instructive part. Convinced this was a trap in the shared
+harness, this report carried a draft issue against `zkevm-benchmark-workload`
+saying so. Reading its `load_eest_benchmark_fixtures` before filing showed the
+opposite: it iterates every case in a file and deliberately takes the *last*
+block per case, because earlier blocks are setup. The bug was entirely local, the
+issue was withdrawn unfiled, and this driver now follows the same rule. Every
+case in this corpus has exactly one block, so no number here moved.
+
+Two lessons, and the second is the one that nearly got away: selecting fixtures
+by position rather than by meaning is the easiest way to publish a confidently
+wrong benchmark, and blaming shared infrastructure for your own defect is the
+easiest way to publish a confidently wrong bug report.
 
 ---
 
@@ -414,10 +424,18 @@ argue with them, which is the fastest way to find out if they are wrong.
 
 ## Right of reply
 
-Draft goes to a16z (Jolt), Succinct (SP1) and eth-act before publication;
-`right-of-reply.md` is what each is asked to check, and it points at the claims
-most likely to be wrong rather than the ones most likely to be liked.
-Corrections of fact go in; disagreements of interpretation are recorded with
+This work is published open rather than circulated privately first, and the
+invitation to correct it is on the record: an issue on `eth-act/ere` proposing
+the backend, a spec PR on `a16z/jolt` proposing ecrecover, and
+`right-of-reply.md`, which sets out what each of the three teams is asked to
+check. It deliberately points at the claims most likely to be wrong rather than
+the ones most likely to be liked.
+
+Corrections of fact go in. Disagreements of interpretation are recorded with
 attribution rather than resolved unilaterally. If any number here is wrong, the
-raw JSON and the scripts that produced it are in this repo and the fastest path
-is to re-run them.
+raw JSON and the scripts that produced it are in this repo, and the fastest path
+is to re-run them and open an issue with the diff.
+
+Nothing here is announced more widely until those threads have had a chance to
+find the errors. The two already found, in section 7, were both caught this way:
+by checking before publishing rather than after.

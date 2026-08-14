@@ -1,8 +1,12 @@
 # Right of reply
 
-Three audiences, three different things worth checking. Send before publication,
-not after. Each note is short on purpose: the report is the artifact, these say
-which parts most deserve an expert's scepticism.
+Three audiences, three different things worth checking. Each note is short on
+purpose: the report is the artifact, these say which parts most deserve an
+expert's scepticism.
+
+Sent openly rather than privately, through the issue and spec threads linked
+below, so that a correction is visible to everyone who reads the claim it
+corrects.
 
 Corrections of fact go in. Disagreements of interpretation are recorded with
 attribution rather than resolved unilaterally.
@@ -87,16 +91,17 @@ the existing mould (no ambient guest IO, a compiler that shells out to the `jolt
 CLI, and a verifying key that carries verifier preprocessing rather than a
 digest). I would rather agree the shape before a PR than after.
 
-**One finding about the harness itself**, which is not a bug but is a trap. An
-EEST file holds many cases and the first is often degenerate:
-`ecpairing/valid.json` opens with the empty input, `p256verify/wycheproof_valid.json`
-with an invalid public key. Taking "the first block with canonical stateless
-bytes" - which is what `zkevm-benchmark-workload`'s selection amounts to for a
-single-fixture run - therefore benchmarks a block that does none of the work the
-file is named for. My first campaign reported 2.00x for "the bn254 workload" on a
-block containing no pairing. Naming the case fixed it, and the real number is
-1.19x.
+**One thing I got wrong about your harness**, recorded because I nearly filed it
+as an issue against you. Benchmarking one fixture at a time, my own driver took
+the first test case in a file and the first block within it. That put me on
+`ecpairing/valid.json`'s `empty-ecpairing` case, which performs no pairing at
+all, and I reported 2.00x for "the bn254 workload" on a block containing no
+bn254 work. The real number is 1.19x, and it turned out to be the most
+interesting result in the study.
 
-If the benchmark runner grew a way to name a case, or a warning when the selected
-block does not touch the precompile its fixture is named for, it would stop the
-next person making the same mistake more quietly than I did.
+Reading `load_eest_benchmark_fixtures` afterwards showed the fault was entirely
+mine. You iterate every case in a file, and deliberately take the *last* block
+per case, with the comment that earlier blocks are setup. My driver now follows
+the same rule. I mention it only so the trap is on record for anyone else
+writing a single-fixture driver against your corpus, and because a note in the
+docs might save them the day it cost me.
