@@ -1,0 +1,27 @@
+{
+  "spike": "S2 advice tape + heap ceiling",
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  },
+  "payload_bytes": 33554432,
+  "declared_max_advice_bytes": 67108864,
+  "trace_len": 12682042,
+  "trace_seconds": 0.839994708,
+  "markers": [
+    {
+      "label": "advice_touch_strided",
+      "real": 40969,
+      "virt": 57344,
+      "total": 98313
+    },
+    {
+      "label": "advice_sum_dense",
+      "real": 5242891,
+      "virt": 7340032,
+      "total": 12582923
+    }
+  ],
+  "dense_cycles_per_byte": 12.00001049041748
+}

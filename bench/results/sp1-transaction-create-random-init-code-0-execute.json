@@ -1,0 +1,13 @@
+{
+  "zkvm": "sp1",
+  "sdk_version": "v6.3.1",
+  "fixture": "tests/ported_static/stInitCodeTest/test_transaction_create_random_init_code.py::test_transaction_create_random_init_code[fork_Amsterdam-blockchain_test_from_state_test]#0",
+  "fixture_path": "../bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/ported_static/stInitCodeTest/transaction_create_random_init_code/transaction_create_random_init_code.json",
+  "witness_bytes": 5409,
+  "total_num_cycles": 1280046,
+  "execution_seconds": 9.282626208,
+  "prove_seconds": null,
+  "verified": null,
+  "output_matches": true,
+  "host": "Apple M3 Max / 14 cores / 36 GiB"
+}

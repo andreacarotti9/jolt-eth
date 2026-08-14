@@ -1,0 +1,105 @@
+{
+  "spike": "S1 keccak inline reachability",
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  },
+  "rows": [
+    {
+      "size_bytes": 1024,
+      "trace_len": 115999,
+      "inline": {
+        "label": "keccak_inline",
+        "real": 892,
+        "virt": 26103,
+        "total": 26995
+      },
+      "soft": {
+        "label": "keccak_soft",
+        "real": 58443,
+        "virt": 6726,
+        "total": 65169
+      },
+      "inline_cycles_per_byte": 26.3623046875,
+      "soft_cycles_per_byte": 63.6416015625,
+      "speedup": 2.4141137247638453
+    },
+    {
+      "size_bytes": 8192,
+      "trace_len": 882231,
+      "inline": {
+        "label": "keccak_inline",
+        "real": 4842,
+        "virt": 198830,
+        "total": 203672
+      },
+      "soft": {
+        "label": "keccak_soft",
+        "real": 444326,
+        "virt": 57182,
+        "total": 501508
+      },
+      "inline_cycles_per_byte": 24.8623046875,
+      "soft_cycles_per_byte": 61.21923828125,
+      "speedup": 2.462331591971405
+    },
+    {
+      "size_bytes": 65536,
+      "trace_len": 6977755,
+      "inline": {
+        "label": "keccak_inline",
+        "real": 36472,
+        "virt": 1570869,
+        "total": 1607341
+      },
+      "soft": {
+        "label": "keccak_soft",
+        "real": 3509649,
+        "virt": 457974,
+        "total": 3967623
+      },
+      "inline_cycles_per_byte": 24.526077270507812,
+      "soft_cycles_per_byte": 60.54112243652344,
+      "speedup": 2.4684388689145615
+    },
+    {
+      "size_bytes": 262144,
+      "trace_len": 27906091,
+      "inline": {
+        "label": "keccak_inline",
+        "real": 144892,
+        "virt": 6283383,
+        "total": 6428275
+      },
+      "soft": {
+        "label": "keccak_soft",
+        "real": 14037963,
+        "virt": 1834566,
+        "total": 15872529
+      },
+      "inline_cycles_per_byte": 24.521923065185547,
+      "soft_cycles_per_byte": 60.548892974853516,
+      "speedup": 2.469173923019784
+    },
+    {
+      "size_bytes": 1048576,
+      "trace_len": 111607987,
+      "inline": {
+        "label": "keccak_inline",
+        "real": 578582,
+        "virt": 25130180,
+        "total": 25708762
+      },
+      "soft": {
+        "label": "keccak_soft",
+        "real": 56143972,
+        "virt": 7339982,
+        "total": 63483954
+      },
+      "inline_cycles_per_byte": 24.517786026000977,
+      "soft_cycles_per_byte": 60.54301643371582,
+      "speedup": 2.469350877339018
+    }
+  ]
+}

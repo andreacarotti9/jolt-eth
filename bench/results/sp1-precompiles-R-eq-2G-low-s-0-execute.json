@@ -1,0 +1,13 @@
+{
+  "zkvm": "sp1",
+  "sdk_version": "v6.3.1",
+  "fixture": "tests/frontier/precompiles/test_ecrecover.py::test_precompiles[fork_Amsterdam-blockchain_test_from_state_test-R_eq_2G_low_s]#0",
+  "fixture_path": "../bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/frontier/precompiles/ecrecover/precompiles.json",
+  "witness_bytes": 5690,
+  "total_num_cycles": 1367936,
+  "execution_seconds": 9.580396542,
+  "prove_seconds": null,
+  "verified": null,
+  "output_matches": true,
+  "host": "Apple M3 Max / 14 cores / 36 GiB"
+}

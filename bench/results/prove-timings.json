@@ -1,0 +1,228 @@
+{
+  "runs": [
+    {
+      "fixture": "ecpairing/three_point_match_1",
+      "config": "accel",
+      "cycles": 20397957,
+      "bound": 33554432,
+      "reps": 3,
+      "prove_seconds_median": 79.0,
+      "prove_seconds_all": [
+        83.1,
+        79.0,
+        76.4
+      ],
+      "verify_seconds_median": 0.56,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "ecpairing/three_point_match_1",
+      "config": "baseline",
+      "cycles": 24233052,
+      "bound": 33554432,
+      "reps": 3,
+      "prove_seconds_median": 81.1,
+      "prove_seconds_all": [
+        78.3,
+        81.2,
+        81.1
+      ],
+      "verify_seconds_median": 0.52,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "ecrecover/R_eq_2G_low_s",
+      "config": "accel",
+      "cycles": 3986529,
+      "bound": 4194304,
+      "reps": 3,
+      "prove_seconds_median": 18.3,
+      "prove_seconds_all": [
+        18.8,
+        18.3,
+        18.2
+      ],
+      "verify_seconds_median": 0.55,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "ecrecover/R_eq_2G_low_s",
+      "config": "baseline",
+      "cycles": 10591427,
+      "bound": 16777216,
+      "reps": 3,
+      "prove_seconds_median": 42.8,
+      "prove_seconds_all": [
+        43.6,
+        42.4,
+        42.8
+      ],
+      "verify_seconds_median": 0.51,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "modexp/EIP-198-case1-mod-even-declared-length-128-bytes",
+      "config": "accel",
+      "cycles": 4092054,
+      "bound": 4194304,
+      "reps": 3,
+      "prove_seconds_median": 17.2,
+      "prove_seconds_all": [
+        17.2,
+        17.2,
+        17.9
+      ],
+      "verify_seconds_median": 0.53,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "modexp/EIP-198-case1-mod-even-declared-length-128-bytes",
+      "config": "baseline",
+      "cycles": 7803003,
+      "bound": 8388608,
+      "reps": 3,
+      "prove_seconds_median": 24.5,
+      "prove_seconds_all": [
+        24.5,
+        24.9,
+        24.3
+      ],
+      "verify_seconds_median": 0.49,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "p256verify/EcdsaP1363Verify SHA-256 #1:",
+      "config": "accel",
+      "cycles": 4140554,
+      "bound": 4194304,
+      "reps": 3,
+      "prove_seconds_median": 17.6,
+      "prove_seconds_all": [
+        17.9,
+        17.4,
+        17.6
+      ],
+      "verify_seconds_median": 0.53,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "p256verify/EcdsaP1363Verify SHA-256 #1:",
+      "config": "baseline",
+      "cycles": 11747118,
+      "bound": 16777216,
+      "reps": 3,
+      "prove_seconds_median": 41.7,
+      "prove_seconds_all": [
+        41.7,
+        41.1,
+        42.1
+      ],
+      "verify_seconds_median": 0.52,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "sha3/sha3_1024_1",
+      "config": "accel",
+      "cycles": 3664805,
+      "bound": 4194304,
+      "reps": 3,
+      "prove_seconds_median": 18.2,
+      "prove_seconds_all": [
+        17.8,
+        19.0,
+        18.2
+      ],
+      "verify_seconds_median": 0.53,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "sha3/sha3_1024_1",
+      "config": "baseline",
+      "cycles": 7305598,
+      "bound": 8388608,
+      "reps": 3,
+      "prove_seconds_median": 27.8,
+      "prove_seconds_all": [
+        27.8,
+        28.1,
+        26.2
+      ],
+      "verify_seconds_median": 0.51,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "transaction_create_random_init_code/default",
+      "config": "accel",
+      "cycles": 3343618,
+      "bound": 4194304,
+      "reps": 3,
+      "prove_seconds_median": 16.7,
+      "prove_seconds_all": [
+        16.7,
+        16.7,
+        16.1
+      ],
+      "verify_seconds_median": 0.53,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "transaction_create_random_init_code/default",
+      "config": "baseline",
+      "cycles": 6814278,
+      "bound": 8388608,
+      "reps": 3,
+      "prove_seconds_median": 24.9,
+      "prove_seconds_all": [
+        25.4,
+        24.3,
+        24.9
+      ],
+      "verify_seconds_median": 0.51,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "value_moving_transactions/non-zero_value-recipient_type_RecipientType.EOA",
+      "config": "accel",
+      "cycles": 3417574,
+      "bound": 4194304,
+      "reps": 3,
+      "prove_seconds_median": 17.0,
+      "prove_seconds_all": [
+        17.9,
+        16.7,
+        17.0
+      ],
+      "verify_seconds_median": 0.53,
+      "verified": true,
+      "output_matches": true
+    },
+    {
+      "fixture": "value_moving_transactions/non-zero_value-recipient_type_RecipientType.EOA",
+      "config": "baseline",
+      "cycles": 6938251,
+      "bound": 8388608,
+      "reps": 3,
+      "prove_seconds_median": 24.4,
+      "prove_seconds_all": [
+        24.9,
+        24.4,
+        24.2
+      ],
+      "verify_seconds_median": 0.5,
+      "verified": true,
+      "output_matches": true
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "fixture": "tests/byzantium/eip197_ec_pairing/test_ecpairing.py::test_valid[fork_Amsterdam-blockchain_test_from_state_test-three_point_match_1-ecpairing]#0",
+  "fixture_path": "bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/byzantium/eip197_ec_pairing/ecpairing/valid.json",
+  "config": "accel",
+  "witness_bytes": 6242,
+  "trace_len": 20397957,
+  "regions": [
+    {
+      "label": "deserialize_input",
+      "real": 33883,
+      "virt": 16628,
+      "total": 50511
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 190876,
+      "virt": 1282855,
+      "total": 1473731
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 118135,
+      "virt": 99112,
+      "total": 217247
+    },
+    {
+      "label": "run_validation",
+      "real": 17135997,
+      "virt": 1511643,
+      "total": 18647640
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    },
+    {
+      "label": "deserialize_input",
+      "real": 33883,
+      "virt": 16628,
+      "total": 50511
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 190876,
+      "virt": 1282855,
+      "total": 1473731
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 118135,
+      "virt": 99112,
+      "total": 217247
+    },
+    {
+      "label": "run_validation",
+      "real": 17135997,
+      "virt": 1511643,
+      "total": 18647640
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    }
+  ],
+  "output_matches": true,
+  "trace_seconds": 0.0,
+  "prove_seconds": 76.371140292,
+  "verify_seconds": 0.549157917,
+  "verified": true,
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  }
+}

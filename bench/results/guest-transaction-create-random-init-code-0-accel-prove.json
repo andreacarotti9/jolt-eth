@@ -1,0 +1,91 @@
+{
+  "fixture": "tests/ported_static/stInitCodeTest/test_transaction_create_random_init_code.py::test_transaction_create_random_init_code[fork_Amsterdam-blockchain_test_from_state_test]#0",
+  "fixture_path": "bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/ported_static/stInitCodeTest/transaction_create_random_init_code/transaction_create_random_init_code.json",
+  "config": "accel",
+  "witness_bytes": 5409,
+  "trace_len": 3343618,
+  "regions": [
+    {
+      "label": "deserialize_input",
+      "real": 32531,
+      "virt": 16054,
+      "total": 48585
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 158919,
+      "virt": 1118621,
+      "total": 1277540
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 114748,
+      "virt": 78415,
+      "total": 193163
+    },
+    {
+      "label": "run_validation",
+      "real": 777873,
+      "virt": 1037629,
+      "total": 1815502
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    },
+    {
+      "label": "deserialize_input",
+      "real": 32531,
+      "virt": 16054,
+      "total": 48585
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 158919,
+      "virt": 1118621,
+      "total": 1277540
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 114748,
+      "virt": 78415,
+      "total": 193163
+    },
+    {
+      "label": "run_validation",
+      "real": 777873,
+      "virt": 1037629,
+      "total": 1815502
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    }
+  ],
+  "output_matches": true,
+  "trace_seconds": 0.0,
+  "prove_seconds": 16.120238459,
+  "verify_seconds": 0.521429958,
+  "verified": true,
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  }
+}

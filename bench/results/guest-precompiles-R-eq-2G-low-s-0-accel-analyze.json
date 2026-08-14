@@ -1,0 +1,55 @@
+{
+  "fixture": "tests/frontier/precompiles/test_ecrecover.py::test_precompiles[fork_Amsterdam-blockchain_test_from_state_test-R_eq_2G_low_s]#0",
+  "fixture_path": "bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/frontier/precompiles/ecrecover/precompiles.json",
+  "config": "accel",
+  "witness_bytes": 5690,
+  "trace_len": 3986529,
+  "regions": [
+    {
+      "label": "deserialize_input",
+      "real": 33885,
+      "virt": 16860,
+      "total": 50745
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 159958,
+      "virt": 1119875,
+      "total": 1279833
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 114883,
+      "virt": 79178,
+      "total": 194061
+    },
+    {
+      "label": "run_validation",
+      "real": 991746,
+      "virt": 1461316,
+      "total": 2453062
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    }
+  ],
+  "output_matches": true,
+  "trace_seconds": 1.014512083,
+  "prove_seconds": null,
+  "verify_seconds": null,
+  "verified": null,
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  }
+}

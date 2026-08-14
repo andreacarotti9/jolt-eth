@@ -1,0 +1,13 @@
+{
+  "zkvm": "sp1",
+  "sdk_version": "v6.3.1",
+  "fixture": "tests/amsterdam/eip2780_reduce_intrinsic_tx_gas/test_value_moving_transactions.py::test_value_moving_transactions[fork_Amsterdam-blockchain_test_from_state_test-non-zero_value-recipient_type_RecipientType.EOA]#0",
+  "fixture_path": "../bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/amsterdam/eip2780_reduce_intrinsic_tx_gas/value_moving_transactions/value_moving_transactions.json",
+  "witness_bytes": 5483,
+  "total_num_cycles": 1307369,
+  "execution_seconds": 10.963124375,
+  "prove_seconds": null,
+  "verified": null,
+  "output_matches": true,
+  "host": "Apple M3 Max / 14 cores / 36 GiB"
+}

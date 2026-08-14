@@ -1,0 +1,91 @@
+{
+  "fixture": "tests/ported_static/vmTests/test_sha3.py::test_sha3[fork_Amsterdam-blockchain_test_from_state_test-sha3_1024_1]#0",
+  "fixture_path": "bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/ported_static/vmTests/sha3/sha3.json",
+  "config": "accel",
+  "witness_bytes": 6306,
+  "trace_len": 3664805,
+  "regions": [
+    {
+      "label": "deserialize_input",
+      "real": 36004,
+      "virt": 17690,
+      "total": 53694
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 164345,
+      "virt": 1139143,
+      "total": 1303488
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 117149,
+      "virt": 82154,
+      "total": 199303
+    },
+    {
+      "label": "run_validation",
+      "real": 899871,
+      "virt": 1199621,
+      "total": 2099492
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    },
+    {
+      "label": "deserialize_input",
+      "real": 36004,
+      "virt": 17690,
+      "total": 53694
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 164345,
+      "virt": 1139143,
+      "total": 1303488
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 117149,
+      "virt": 82154,
+      "total": 199303
+    },
+    {
+      "label": "run_validation",
+      "real": 899871,
+      "virt": 1199621,
+      "total": 2099492
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    }
+  ],
+  "output_matches": true,
+  "trace_seconds": 0.0,
+  "prove_seconds": 18.229670667,
+  "verify_seconds": 0.528581291,
+  "verified": true,
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  }
+}

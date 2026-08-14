@@ -1,0 +1,55 @@
+{
+  "fixture": "tests/osaka/eip7951_p256verify_precompiles/test_p256verify.py::test_wycheproof_valid[fork_Amsterdam-blockchain_test_from_state_test--wycheproof/ecdsa_secp256r1_sha256_p1363_test.json EcdsaP1363Verify SHA-256 #1: signature malleability]#0",
+  "fixture_path": "bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/osaka/eip7951_p256verify_precompiles/p256verify/wycheproof_valid.json",
+  "config": "baseline",
+  "witness_bytes": 5767,
+  "trace_len": 11747118,
+  "regions": [
+    {
+      "label": "deserialize_input",
+      "real": 33119,
+      "virt": 16212,
+      "total": 49331
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 1826039,
+      "virt": 946544,
+      "total": 2772583
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 238252,
+      "virt": 52189,
+      "total": 290441
+    },
+    {
+      "label": "run_validation",
+      "real": 7628492,
+      "virt": 997966,
+      "total": 8626458
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    }
+  ],
+  "output_matches": true,
+  "trace_seconds": 1.334695375,
+  "prove_seconds": null,
+  "verify_seconds": null,
+  "verified": null,
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  }
+}

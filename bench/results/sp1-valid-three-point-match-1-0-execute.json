@@ -1,0 +1,13 @@
+{
+  "zkvm": "sp1",
+  "sdk_version": "v6.3.1",
+  "fixture": "tests/byzantium/eip197_ec_pairing/test_ecpairing.py::test_valid[fork_Amsterdam-blockchain_test_from_state_test-three_point_match_1-ecpairing]#0",
+  "fixture_path": "../bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/byzantium/eip197_ec_pairing/ecpairing/valid.json",
+  "witness_bytes": 6242,
+  "total_num_cycles": 3697295,
+  "execution_seconds": 9.582356292,
+  "prove_seconds": null,
+  "verified": null,
+  "output_matches": true,
+  "host": "Apple M3 Max / 14 cores / 36 GiB"
+}

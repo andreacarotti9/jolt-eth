@@ -1,0 +1,13 @@
+{
+  "zkvm": "sp1",
+  "sdk_version": "v6.3.1",
+  "fixture": "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Amsterdam-blockchain_test_from_state_test-EIP-198-case1-mod-even-declared-length-128-bytes]#0",
+  "fixture_path": "../bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/byzantium/eip198_modexp_precompile/modexp/modexp.json",
+  "witness_bytes": 5920,
+  "total_num_cycles": 1646798,
+  "execution_seconds": 9.194568,
+  "prove_seconds": null,
+  "verified": null,
+  "output_matches": true,
+  "host": "Apple M3 Max / 14 cores / 36 GiB"
+}

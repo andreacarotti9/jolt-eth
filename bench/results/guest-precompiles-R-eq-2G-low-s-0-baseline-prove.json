@@ -1,0 +1,91 @@
+{
+  "fixture": "tests/frontier/precompiles/test_ecrecover.py::test_precompiles[fork_Amsterdam-blockchain_test_from_state_test-R_eq_2G_low_s]#0",
+  "fixture_path": "bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/frontier/precompiles/ecrecover/precompiles.json",
+  "config": "baseline",
+  "witness_bytes": 5690,
+  "trace_len": 10591427,
+  "regions": [
+    {
+      "label": "deserialize_input",
+      "real": 33889,
+      "virt": 16860,
+      "total": 50749
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 1728982,
+      "virt": 894360,
+      "total": 2623342
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 212820,
+      "virt": 49632,
+      "total": 262452
+    },
+    {
+      "label": "run_validation",
+      "real": 6571533,
+      "virt": 1075046,
+      "total": 7646579
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    },
+    {
+      "label": "deserialize_input",
+      "real": 33889,
+      "virt": 16860,
+      "total": 50749
+    },
+    {
+      "label": "new_payload_request_root",
+      "real": 1728982,
+      "virt": 894360,
+      "total": 2623342
+    },
+    {
+      "label": "validate_chain_config",
+      "real": 40,
+      "virt": 12,
+      "total": 52
+    },
+    {
+      "label": "to_reth_input",
+      "real": 212820,
+      "virt": 49632,
+      "total": 262452
+    },
+    {
+      "label": "run_validation",
+      "real": 6571533,
+      "virt": 1075046,
+      "total": 7646579
+    },
+    {
+      "label": "serialize_output",
+      "real": 1237,
+      "virt": 1383,
+      "total": 2620
+    }
+  ],
+  "output_matches": true,
+  "trace_seconds": 0.0,
+  "prove_seconds": 42.828862917,
+  "verify_seconds": 0.514060458,
+  "verified": true,
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  }
+}

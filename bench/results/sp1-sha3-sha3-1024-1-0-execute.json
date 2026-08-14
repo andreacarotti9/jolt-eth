@@ -1,0 +1,13 @@
+{
+  "zkvm": "sp1",
+  "sdk_version": "v6.3.1",
+  "fixture": "tests/ported_static/vmTests/test_sha3.py::test_sha3[fork_Amsterdam-blockchain_test_from_state_test-sha3_1024_1]#0",
+  "fixture_path": "../bench/fixtures/eest/fixtures/blockchain_tests/for_amsterdam/ported_static/vmTests/sha3/sha3.json",
+  "witness_bytes": 6306,
+  "total_num_cycles": 1403764,
+  "execution_seconds": 9.658715292,
+  "prove_seconds": null,
+  "verified": null,
+  "output_matches": true,
+  "host": "Apple M3 Max / 14 cores / 36 GiB"
+}

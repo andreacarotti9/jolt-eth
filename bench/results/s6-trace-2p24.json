@@ -1,0 +1,21 @@
+{
+  "spike": "S6 trace-length / RAM ceiling",
+  "env": {
+    "jolt_commit": "915faf453f36871249615a7fdf2704d77a88f259",
+    "host": "Apple M3 Max / 14 cores / 36 GiB",
+    "cpus": 14
+  },
+  "prover": "jolt-prover-legacy",
+  "log2_max_trace_length": 24,
+  "max_trace_length": 16777216,
+  "iters": 1078239,
+  "cycles_per_iter": 14.0012,
+  "actual_trace_len": 15098197,
+  "fill_ratio": 0.8999226689338684,
+  "preprocess_seconds": 4.709824,
+  "prove_seconds": 41.022842625,
+  "verify_seconds": 0.071032167,
+  "verified": true,
+  "max_rss_bytes": 14296907776,
+  "peak_memory_footprint_bytes": 14460758864
+}
