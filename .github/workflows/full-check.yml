@@ -1,0 +1,73 @@
+# The slow gate: build the workspace against the pinned upstreams and run the
+# real test suite, including the end-to-end compile -> execute -> prove -> verify
+# on an EEST block.
+#
+# Not on every push, deliberately. This clones multi-GB upstreams, installs the
+# Jolt CLI and proves a real block; on a standard GitHub runner it is close to
+# the disk and memory limits. Treat a failure here as "the pins moved or the
+# environment drifted", which is worth knowing weekly rather than hourly.
+#
+# It does NOT re-run the measurement campaign. Numbers in this repo come from
+# one known machine (see bench/METHODOLOGY.md); regenerating them on a shared
+# CI runner would produce different, unusable figures. CI checks that the code
+# still builds and is still correct - not how fast a cloud VM happens to be.
+name: full-check
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays, 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: build against pinned upstreams
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: free disk space
+        # The Jolt checkout plus a release build of 386 crates does not fit
+        # alongside the runner's preinstalled toolchains.
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          df -h /
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: install figure dependencies
+        run: pip install --disable-pip-version-check matplotlib
+
+      - name: clone pinned upstreams
+        run: scripts/clone-upstream.sh
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          # Jolt pins the toolchain; read it rather than duplicating the version.
+          toolchain: ${{ github.workspace }}/upstream/jolt/rust-toolchain.toml
+          targets: riscv32imac-unknown-none-elf,riscv64imac-unknown-none-elf
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: jolt-${{ hashFiles('UPSTREAM.md') }}
+
+      - name: install the jolt CLI
+        run: cargo install --path upstream/jolt --bin jolt --locked
+
+      - name: fetch EEST fixtures
+        run: scripts/fetch-fixtures.sh
+
+      - name: corpus resolves to real cases
+        # Only runnable once fixtures exist: every workload must name a case
+        # that is actually present in its file.
+        run: python3 scripts/validate-repo.py
+
+      - name: check
+        # Build, unit tests (ecrecover differential against k256, inline-hash
+        # agreement), the Ere backend end to end, and the table check.
+        run: scripts/check.sh

@@ -1,0 +1,53 @@
+# The fast gate: everything that can be checked without a prover.
+#
+# The claim this repo makes is "no published number was typed by hand". That is
+# checkable on a clean checkout in seconds, with no Rust, no Jolt CLI and no
+# fixtures - so it runs on every push, and a broken number fails the build
+# rather than reaching a reader.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numbers:
+    name: published numbers match bench/results
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: install figure dependencies
+        run: pip install --disable-pip-version-check matplotlib
+
+      - name: repo integrity
+        # Pins are full shas, every result is from the pinned Jolt build and one
+        # machine, every fixture has both configurations, no run recorded a
+        # wrong output, figures are neither missing nor orphaned, links resolve.
+        run: python3 scripts/validate-repo.py
+
+      - name: report tables are current
+        run: python3 scripts/render-report.py --check
+
+      - name: figures are current
+        run: python3 scripts/render-figures.py --check
+
+  shell:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck
+        # The campaign scripts decide which case each workload means. A quoting
+        # bug there silently measures the wrong thing, which is exactly the
+        # failure mode recorded in report/REPORT.md.
+        run: shellcheck -S warning scripts/*.sh
