@@ -2,7 +2,7 @@
 # The SP1 column of the campaign, over the same corpus, the same cases and the
 # same block-selection rule as scripts/campaign.sh.
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 . scripts/corpus.sh
 
 export PATH="$HOME/.sp1/bin:$PATH"

@@ -4,17 +4,25 @@
 Same contract as render-report.py: no number is ever typed into a figure by
 hand. Writes SVG + PNG, light and dark, into report/figures/.
 
+Rendering writes figures.lock.json beside them, recording a digest of every
+result file the figures are drawn from and of this script. `--check` recomputes
+those digests, so it answers "were the committed figures generated from the
+current data by the current code" without re-rendering.
+
+It deliberately does NOT compare rendered bytes. matplotlib's SVG output varies
+with its own version and with which font weights the host happens to have, so a
+byte comparison fails across machines while telling you nothing about whether
+the numbers moved - which is the thing worth checking.
+
 Usage: render-figures.py [--check]
-  --check  regenerate into a temp dir and fail if anything differs from
-           what is committed, so a stale figure fails like a stale table.
 """
 
+import hashlib
 import json
 import math
 import pathlib
 import statistics
 import sys
-import tempfile
 
 import matplotlib
 
@@ -119,7 +127,7 @@ def figure(t, w, h):
 
 
 def title(ax, t, head, sub):
-    ax.set_title(head, color=t["ink"], fontsize=13, fontweight="600", loc="left", pad=22)
+    ax.set_title(head, color=t["ink"], fontsize=13, fontweight="bold", loc="left", pad=22)
     ax.text(
         0, 1.015, sub, transform=ax.transAxes, color=t["ink2"], fontsize=9.5, va="bottom"
     )
@@ -176,14 +184,14 @@ def fig_staircase(t, mode):
                    edgecolor=t["surface"], linewidth=2, zorder=4)
         ax.text(a["cycles"] * 0.92, y, f"{a['prove_seconds_median']:.1f} s",
                 ha="right", va="center", color=t["ink"], fontsize=9,
-                fontweight="600", zorder=5)
+                fontweight="bold", zorder=5)
         ax.text(b["cycles"] * 1.09, y, f"{b['prove_seconds_median']:.1f} s",
                 ha="left", va="center", color=t["ink"], fontsize=9,
-                fontweight="600", zorder=5)
+                fontweight="bold", zorder=5)
         word = {0: "no rung", 1: "one rung", 2: "two rungs"}[rungs]
         ax.text(2 ** 25.62, y, word, ha="left", va="center", fontsize=9,
                 color=t["s2"] if rungs else t["ink3"],
-                fontweight="600" if rungs == 2 else "normal", zorder=5)
+                fontweight="bold" if rungs == 2 else "normal", zorder=5)
 
     ax.set_xscale("log", base=2)
     ax.set_xlim(2 ** 21.16, 2 ** 25.48)
@@ -197,7 +205,7 @@ def fig_staircase(t, mode):
     ax.spines["bottom"].set_visible(False)
 
     ax.text(2 ** 25.62, len(names) - 0.32, "crossed", color=t["ink2"], fontsize=8.5,
-            ha="left", va="top", fontweight="600")
+            ha="left", va="top", fontweight="bold")
     ax.legend(
         handles=[
             Line2D([], [], marker="o", ls="", ms=9, color=t["s1"], label="software"),
@@ -240,13 +248,13 @@ def fig_regions(t, mode):
             if w / total > 0.06:
                 ax.text(left + w / 2, y, f"{100 * w / total:.0f}%", ha="center",
                         va="center", color=t["surface"], fontsize=9.5,
-                        fontweight="600", zorder=4)
+                        fontweight="bold", zorder=4)
             left += w
         rest = total - left
         ax.barh(y, rest, left=left, height=0.62, color=t["mute"],
                 edgecolor=t["surface"], linewidth=2, zorder=3)
         ax.text(total + total * 0.012, y, f"{total / 1e6:.2f}M", va="center",
-                color=t["ink"], fontsize=10, fontweight="600", zorder=4)
+                color=t["ink"], fontsize=10, fontweight="bold", zorder=4)
 
     ax.set_yticks(range(len(rows)))
     ax.set_yticklabels([r[0] for r in rows], color=t["ink"], fontsize=10)
@@ -289,7 +297,7 @@ def fig_virtual(t, mode):
     ax.scatter(names, base, s=150, color=t["ink3"], zorder=4, marker="_", linewidth=2.4)
     for x, (s, b) in enumerate(zip(share, base)):
         ax.text(x, s + 2, f"{s:.0f}%", ha="center", color=t["ink"], fontsize=9.5,
-                fontweight="600")
+                fontweight="bold")
     ax.set_ylim(0, 104)
     ax.set_ylabel("virtual share of the accelerated trace", color=t["ink2"],
                   fontsize=9.5)
@@ -329,7 +337,7 @@ def fig_sp1(t, mode):
            color=[t["s2"] if n == "ecpairing" else t["mute"] for n in names], zorder=3)
     for x, v in enumerate(vals):
         ax.text(x, v + 0.11, f"{v:.2f}x", ha="center", color=t["ink"], fontsize=9.5,
-                fontweight="600")
+                fontweight="bold")
     ax.set_ylim(0, 6.4)
     ax.set_ylabel("Jolt trace rows ÷ SP1 instruction count", color=t["ink2"],
                   fontsize=9.5)
@@ -395,21 +403,21 @@ def fig_ladder(t, mode):
         ax.scatter([x_end], [mid], s=52, facecolor=t["surface"], edgecolor=color,
                    linewidth=2, zorder=4)
         ax.text(x_end - 0.1, mid + top * 0.125, tag, color=t["ink"], fontsize=9.5,
-                ha="center", fontweight="600")
+                ha="center", fontweight="bold")
         ax.text(x_end - 0.1, mid + top * 0.055, "mainnet-sized", color=t["ink2"],
                 fontsize=8.5, ha="center")
         ax.set_ylim(0, top)
         ax.set_xlim(19.4, 28.6)
         ax.set_xticks([20, 22, 24, 26])
         ax.set_xticklabels(["2^20", "2^22", "2^24", "2^26"])
-        ax.set_title(name, color=t["ink"], fontsize=10.5, fontweight="600",
+        ax.set_title(name, color=t["ink"], fontsize=10.5, fontweight="bold",
                      loc="left", pad=8)
         ax.grid(axis="y", color=t["grid"], lw=1, zorder=0)
         ax.set_axisbelow(True)
     axes[1].axhline(36, color=t["ink3"], lw=1, ls=(0, (4, 3)), zorder=2)
     axes[1].text(19.7, 37.2, "36 GiB — this machine", color=t["ink2"], fontsize=8.5)
     fig.text(0.008, 1.14, "A 60M-cycle trace proves in 2.6 minutes on a laptop",
-             color=t["ink"], fontsize=13, fontweight="600")
+             color=t["ink"], fontsize=13, fontweight="bold")
     fig.text(0.008, 1.045,
              "Trace-length ladder, M3 Max / 36 GiB, driven by a synthetic loop. "
              "Dashed is extrapolation, not measurement; the memory",
@@ -440,7 +448,7 @@ def fig_pipeline(t, mode):
         ax.add_patch(plt.Rectangle((x, 20), 22, 15, facecolor=color, edgecolor="none",
                                    zorder=2))
         ax.text(x + 11, 30.5, head, ha="center", va="center", color=t["surface"],
-                fontsize=10, fontweight="600", linespacing=1.4, zorder=3)
+                fontsize=10, fontweight="bold", linespacing=1.4, zorder=3)
         ax.text(x + 11, 16.5, sub, ha="center", va="top", color=t["ink2"], fontsize=8.5,
                 linespacing=1.5, zorder=3)
     for x in (24.4, 49.4, 74.4):
@@ -456,7 +464,7 @@ def fig_pipeline(t, mode):
         ax.text(x, y, text, ha="center", va="bottom", color=t["ink"], fontsize=8.5,
                 linespacing=1.5, zorder=3)
     ax.set_title("What is being measured", color=t["ink"], fontsize=13,
-                 fontweight="600", loc="left", pad=26)
+                 fontweight="bold", loc="left", pad=26)
     ax.text(0, 1.02, "Every number in this post comes from one of the three dashed "
                      "markers below.", transform=ax.transAxes, color=t["ink2"],
             fontsize=9.5, va="bottom")
@@ -475,7 +483,7 @@ def fig_speedup(t, mode):
            color=[t["s2"] if n == "ecpairing" else t["s1"] for n in names], zorder=3)
     for x, v in enumerate(vals):
         ax.text(x, v + 0.07, "%.2fx" % v, ha="center", color=t["ink"], fontsize=10,
-                fontweight="600")
+                fontweight="bold")
     ax.axhline(1.0, color=t["ink3"], lw=1.5, ls=(0, (4, 3)), zorder=2)
     ax.text(6.62, 0.90, "1.0x =\nno gain\nat all", color=t["ink2"], fontsize=8.5,
             va="top", linespacing=1.5)
@@ -498,33 +506,87 @@ def fig_speedup(t, mode):
 FIGURES_ALL = [fig_pipeline, fig_speedup, fig_regions, fig_virtual,
                fig_staircase, fig_sp1, fig_ladder]
 
+# Every result file the figures above read. Keep in step with the loaders.
+SOURCES = ("guest-*-analyze.json", "s6-trace-*.json", "prove-timings.json",
+           "sp1-*.json")
+
+LOCK = FIGURES / "figures.lock.json"
+
+STEMS = ("01-pipeline", "02-speedup", "03-regions", "04-virtual-share",
+         "05-staircase", "06-sp1-ratio", "07-ladder")
+
+
+def digest(paths):
+    sha = hashlib.sha256()
+    for path in sorted(paths, key=lambda p: p.name):
+        sha.update(path.name.encode())
+        sha.update(hashlib.sha256(path.read_bytes()).digest())
+    return sha.hexdigest()
+
+
+def fingerprint():
+    inputs = [p for pattern in SOURCES for p in RESULTS.glob(pattern)]
+    if not inputs:
+        raise SystemExit(f"no result files under {RESULTS}")
+    return {
+        "inputs": digest(inputs),
+        "input_files": len(inputs),
+        "script": hashlib.sha256(
+            pathlib.Path(__file__).resolve().read_bytes()).hexdigest(),
+    }
+
+
+def expected_names():
+    names = []
+    for mode in THEMES:
+        for stem in STEMS:
+            suffix = "" if mode == "light" else "-dark"
+            names += [f"{stem}{suffix}.png", f"{stem}{suffix}.svg"]
+    return sorted(names)
+
+
+def check():
+    if not LOCK.exists():
+        print(f"missing {LOCK.relative_to(ROOT)}; run scripts/render-figures.py",
+              file=sys.stderr)
+        return 1
+    locked = json.loads(LOCK.read_text())
+    current = fingerprint()
+    problems = []
+    if locked.get("inputs") != current["inputs"]:
+        problems.append(
+            f"bench/results changed since the figures were rendered "
+            f"({locked.get('input_files')} -> {current['input_files']} files)")
+    if locked.get("script") != current["script"]:
+        problems.append("render-figures.py changed since the figures were rendered")
+    on_disk = {p.name for p in FIGURES.iterdir()
+               if p.suffix in (".png", ".svg")} if FIGURES.is_dir() else set()
+    expected = set(expected_names())
+    if missing := sorted(expected - on_disk):
+        problems.append(f"missing figures: {missing}")
+    if extra := sorted(on_disk - expected):
+        problems.append(f"unexpected figures: {extra}")
+    if problems:
+        for problem in problems:
+            print(f"figures are stale: {problem}", file=sys.stderr)
+        print("run scripts/render-figures.py", file=sys.stderr)
+        return 1
+    print(f"figures current ({len(expected)} files, "
+          f"{current['input_files']} result files, {current['inputs'][:12]})")
+    return 0
+
 
 def main():
-    global FIGURES
-    check = "--check" in sys.argv
-    committed = FIGURES
-    if check:
-        FIGURES = pathlib.Path(tempfile.mkdtemp()) / "figures"
+    if "--check" in sys.argv:
+        return check()
     for mode, theme in THEMES.items():
         plt.rcParams["font.family"] = ["DejaVu Sans"]
-        # fixed salt: matplotlib otherwise randomises SVG element ids per
-        # process, which would make --check fail on identical input
-        plt.rcParams["svg.hashsalt"] = "jolt-eth"
         for builder in FIGURES_ALL:
             builder(theme, mode)
-    if check:
-        stale = [
-            f.name
-            for f in sorted(FIGURES.glob("*.svg"))
-            if not (committed / f.name).exists()
-            or (committed / f.name).read_bytes() != f.read_bytes()
-        ]
-        if stale:
-            print(f"figures are stale; run scripts/render-figures.py: {stale}",
-                  file=sys.stderr)
-            return 1
-        return 0
-    print(f"rendered {len(FIGURES_ALL) * 2 * 2} files into {FIGURES}")
+    lock = fingerprint()
+    lock["figure_files"] = expected_names()
+    LOCK.write_text(json.dumps(lock, indent=2) + "\n")
+    print(f"rendered {len(expected_names())} files into {FIGURES}")
     return 0
 
 

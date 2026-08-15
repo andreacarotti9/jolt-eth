@@ -217,6 +217,12 @@ drifted from `bench/results/`.
 | [`ci.yml`](.github/workflows/ci.yml) | every push and PR | the published numbers, checked without a prover — `validate-repo.py`, `render-report.py --check`, `render-figures.py --check`, shellcheck |
 | [`full-check.yml`](.github/workflows/full-check.yml) | weekly and on demand | clones the pinned upstreams, installs the `jolt` CLI, fetches fixtures and runs `scripts/check.sh` |
 
+`render-figures.py --check` compares a digest of the result files and of the
+script itself, recorded in `report/figures/figures.lock.json`, rather than the
+rendered bytes — matplotlib's SVG output varies with its version and with the
+host's font weights, so a byte comparison fails across machines while saying
+nothing about whether the numbers moved.
+
 [`scripts/validate-repo.py`](scripts/validate-repo.py) is the integrity check
 and needs no build: pins are full shas, **every result file comes from the Jolt
 commit `UPSTREAM.md` pins and from one machine**, every fixture has both crypto

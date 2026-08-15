@@ -3,7 +3,7 @@
 # configurations, N repetitions. Results land in bench/results/ as JSON; the
 # report's tables are regenerated from those files by scripts/render-report.py.
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 . scripts/corpus.sh
 
 export PATH="$PWD/.cargo-target-jolt/release:$PATH"

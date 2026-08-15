@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+# Sourced by the campaign scripts, so it has no shebang of its own.
 # The corpus: one workload per line, as `path::case-substring`.
 #
 # The case matters. An EEST file holds many cases and the first is often

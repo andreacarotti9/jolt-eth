@@ -5,7 +5,7 @@
 # memory is the binding constraint here - so run each rung under `/usr/bin/time -l`
 # and merge the two numbers it reports into the JSON the driver wrote.
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 
 export PATH="$PWD/.cargo-target-jolt/release:$PATH"
 export SPIKE_HOST="${SPIKE_HOST:-$(sysctl -n machdep.cpu.brand_string) / $(sysctl -n hw.ncpu) cores / $(( $(sysctl -n hw.memsize) / 1024 / 1024 / 1024 )) GiB}"
