@@ -62,15 +62,21 @@ cargo run --release -p s6-trace  -- 24             # proving cost at a 2^24 boun
 
 ## The three claims this repo is built to support
 
-1. **The EF's stateless validator runs in Jolt.** Unmodified
+1. **On Jolt, the unit of optimisation is rungs, not percent.** Proving cost is
+   sized for the trace rounded up to a power of two, so what an optimisation is
+   worth depends entirely on whether it crosses a rung. Accelerating ecrecover
+   removes 62% of its cycles and makes the proof 2.3x cheaper; accelerating the
+   bn254 pairing block removes 16% and makes it cheaper by nothing at all. Within
+   a rung, an 11-24% difference in cycles moves proving time by 3-10% — and in
+   one pair, the block with 11% *more* cycles proves 1.1 s *faster*.
+2. **The EF's stateless validator runs in Jolt.** Unmodified
    `stateless-validator-reth`, `no_std`, on Jolt's `riscv64imac` target, proving
-   real EEST blocks whose output matches the fixture's `statelessOutputBytes`.
-2. **Jolt has an Ere backend.** The four-crate contract, passing an end-to-end
-   compile/execute/prove/verify test, plus the upstream patch and image.
-3. **The numbers are honest about where Jolt stands.** Inlines are virtual
-   instruction sequences, not precompiles: they cut cycles by about half on real
-   blocks, not by orders of magnitude. The one workload where Jolt has no
-   substrate at all - bn254 pairing - costs more than every other acceleration
-   gains. And proving cost is quantised: the prover is sized for the trace
-   rounded up to a power of two, so what an optimisation is worth depends on
-   whether it crosses a rung.
+   real EEST blocks whose output matches the fixture's `statelessOutputBytes` —
+   and behind an Ere backend, so it is reachable through the same interface the
+   other zkVMs are.
+3. **The numbers are honest about where Jolt stands.** About 2x from acceleration
+   on a real block, not an order of magnitude. A flat ~2.6x trace-length ratio
+   against SP1's instruction count on six of seven workloads — different units,
+   not a verdict — and a 5.5x outlier on the one workload where Jolt has no
+   substrate at all. Filling that bn254 gap is the single change that would move
+   these numbers most.
