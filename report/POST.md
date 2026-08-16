@@ -150,7 +150,7 @@ it. With nothing to call, the pairing runs in plain software exactly as it did
 before. The 1.19x that remains is the block's *hashing* getting faster around a
 pairing operation that acceleration never touched.
 
-Three separate measurements say the same thing:
+Two separate measurements say the same thing:
 
 - **The speedup is flat.** 1.19x, where every other block gets ~2x.
 - **The trace shows almost nothing was accelerated.** Jolt's accelerated
@@ -160,12 +160,12 @@ Three separate measurements say the same thing:
   two thirds. The pairing block goes from 10% to 14% — it barely moves. That ratio
   is a cheap diagnostic for "is this workload actually accelerated," runnable on a
   workload nobody has characterised by hand.
-- **It's the only workload where the gap to SP1 doubles** — more on that below.
 
 ![Bar chart of virtual-instruction share per workload. Six workloads at 61-68%; ecpairing at 14%, highlighted.](figures/04-virtual-share.png)
 
-If you want one thing to build for Jolt's Ethereum story, it's bn254. Nothing else
-I measured comes close.
+SP1 ships a bn254 precompile, so this is a missing feature rather than a cost
+inherent to proving pairings. If you want one thing to build for Jolt's Ethereum
+story, it's bn254. Nothing else I measured comes close.
 
 ---
 
@@ -254,40 +254,26 @@ check.
 
 SP1 is the zkVM already plugged into the EF's harness, so it's the obvious
 reference point. I ran the same seven blocks through it — same guest source, same
-fixtures, same machine — and divided Jolt's trace rows by SP1's instruction count.
+fixtures, same machine.
 
-![Bar chart of Jolt trace rows divided by SP1 instruction count. Six workloads between 2.48x and 2.91x; ecpairing at 5.52x, highlighted.](figures/06-sp1-ratio.png)
+The result worth reporting is a correctness one. **Both provers produce output
+byte-identical to the fixture's canonical answer, on all seven blocks.** That is
+the cross-check in its strongest form: not two implementations agreeing with each
+other, but both agreeing with the reference the EEST fixture carries.
 
-Six workloads land between 2.48x and 2.91x. The seventh, `ecpairing`, lands at
-5.52x.
+I am deliberately not publishing a cycle-count comparison. The two numbers don't
+measure the same thing — Jolt's is trace rows, and its inlines expand into that
+trace; SP1's is instructions, and its precompiles run in separate machinery the
+number never shows. Dividing one by the other produces a figure that looks like a
+verdict and isn't. Some of it would be a real architectural difference and some
+of it bookkeeping, and cycle counts alone cannot separate the two.
 
-**Now the caveat, because this is where the study is weakest.** Those ratios are
-not a scoreboard, because the two numbers count different things. Jolt's number
-includes accelerated work, since inlines live in the main trace. SP1's number
-*excludes* it, since its precompiles run elsewhere and appear as a single call.
-It's like comparing two programs by instructions executed when one of them doesn't
-count anything inside a library call. Some of that 2.6x is a real architectural
-difference and some is bookkeeping, and this data cannot separate them. **Nobody
-should quote "Jolt is 2.6x SP1" from this chart, in either direction.**
-
-What survives the caveat is the *shape*. Six very different computations — a hash
-test, a modular exponentiation, a transfer, a contract deployment, two signature
-schemes — all land within that narrow band, which says the bookkeeping offset is
-roughly constant across workloads. And if the offset is constant, differences
-between workloads are readable even when the absolute level isn't. `ecpairing` at
-**twice the ratio everything else gets** is therefore a real effect, not an
-artefact: SP1 has a bn254 precompile, Jolt has nothing. Third independent
-confirmation of the same gap.
-
-You can't use a miscalibrated thermometer to state the temperature. You can
-absolutely use it to say one room is much hotter than the other six.
-
-**The other thing missing.** A real prover comparison needs numbers that aren't in
-either system's private units: prove time, verify time, proof size, peak memory.
-All four are wall-clock seconds and bytes, all four are directly comparable, and I
-have all four for Jolt and none for SP1 — I only ever ran SP1 in execute mode.
-That's a gap in the study, not a limitation of the method, and it's the next thing
-I'll fix.
+**What a real comparison needs** is numbers in neither system's private units:
+prove time, verify time, proof size, peak memory. All four are wall-clock seconds
+and bytes, all four are directly comparable between any two provers, and I have
+all four for Jolt and none for SP1 — I only ever ran SP1 in execute mode. That's a
+gap in the study, not a limitation of the method, and it's the next thing I'll
+fix.
 
 When I do, I expect it to be more interesting than a single winner. Jolt should
 look good on CPU proving speed. SP1 should look good on verification and proof
